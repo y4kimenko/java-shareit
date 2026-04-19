@@ -24,8 +24,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto createItem(ItemRequestCreateDto dto, long userId) {
 
-        User user = userStorage.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "Пользователь с id = " + userId + " не найден"));
+        User user = getUserOrThrow(userId);
 
         Item req = ItemMapper.toEntity(dto);
         req.setOwner(user);
@@ -36,8 +35,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto updateItem(ItemRequestUpdateDto dto, long itemId, long userId) {
 
-        User user = userStorage.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "Пользователь с id = " + userId + " не найден"));
+        User user = getUserOrThrow(userId);
 
         Item req = ItemMapper.toEntity(dto, userId);
         req.setOwner(user);
@@ -65,8 +63,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getUserItems(long userId) {
-        userStorage.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "Пользователь с id = " + userId + " не найден"));
+        getUserOrThrow(userId);
         return itemRepository.getUserItems(userId).stream()
                 .map(ItemMapper::toResponseDto)
                 .toList();
@@ -79,5 +76,10 @@ public class ItemServiceImpl implements ItemService {
                 .toList();
     }
 
+
+    private User getUserOrThrow(long userId) {
+        return userStorage.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + userId + " не найден"));
+    }
 
 }

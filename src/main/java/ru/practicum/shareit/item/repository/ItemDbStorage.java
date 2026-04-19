@@ -7,22 +7,22 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
 @Slf4j
 public class ItemDbStorage implements ItemRepository {
-    private final HashMap<Long, Item> storage = new HashMap<>();
+    private final Map<Long, Item> storage = new HashMap<>();
 
 
     @Override
     public Item create(Item item) {
+        log.debug("createItem() – request name={}, description={}, available={}", item.getName(), item.getDescription(), item.getAvailable());
         long t0 = System.nanoTime();
 
-        log.debug("createItem() – request name={}, description={}, available={}", item.getName(), item.getDescription(), item.getAvailable());
         item.setId(getNextId());
-
         storage.put(item.getId(), item);
 
         long ms = (System.nanoTime() - t0) / 1_000_000;
@@ -33,10 +33,10 @@ public class ItemDbStorage implements ItemRepository {
 
     @Override
     public Item update(Item item) {
-        long t0 = System.nanoTime();
+
         log.debug("updateItem() – request id={}, name={}, description={}, available={}",
                 item.getId(), item.getName(), item.getDescription(), item.getAvailable());
-
+        long t0 = System.nanoTime();
 
         if (storage.containsKey(item.getId())) {
             storage.put(item.getId(), item);

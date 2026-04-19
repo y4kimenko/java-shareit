@@ -6,19 +6,19 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @Slf4j
 public class UserDbStorage implements UserStorage { // Реализовал в виде обычной заглушки, так как не знаю какое тз будет дальше
-    private final HashMap<Long, User> storage = new HashMap<>();
+    private final Map<Long, User> storage = new HashMap<>();
 
     @Override
     public User create(User user) {
-        long t0 = System.nanoTime();
-
         log.debug("createUser() – request name={}, email={}", user.getName(), user.getEmail());
         user.setId(getNextId());
+        long t0 = System.nanoTime();
 
         storage.put(user.getId(), user);
 
@@ -35,10 +35,9 @@ public class UserDbStorage implements UserStorage { // Реализовал в �
 
     @Override
     public User update(User user) {
-        long t0 = System.nanoTime();
         log.debug("updateUser() – request id={}, name={}, email={}",
                 user.getId(), user.getName(), user.getEmail());
-
+        long t0 = System.nanoTime();
 
         if (storage.containsKey(user.getId())) {
             storage.put(user.getId(), user);
