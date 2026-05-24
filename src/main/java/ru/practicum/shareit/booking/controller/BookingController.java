@@ -42,7 +42,7 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingResponseDto approveBooking (
+    public BookingResponseDto approveBooking(
             @PathVariable("bookingId")
             @PositiveOrZero(message = "bookingId не может быть отрицательным") final Long bookingId,
             @RequestParam("approved")
