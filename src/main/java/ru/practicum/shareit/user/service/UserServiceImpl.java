@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
             user.setName(req.getName());
 
         if (req.getEmail() != null) {
-            if (userRepository.findUserByEmail(dto.email()))
+            if (userRepository.existsByEmail(dto.email()))
                 throw new DuplicateEmailException();
 
             user.setEmail(req.getEmail());
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserRequestCreateDto dto) {
-        if (userRepository.findUserByEmail(dto.email()))
+        if (userRepository.existsByEmail(dto.email()))
             throw new DuplicateEmailException();
 
         User user = UserMapper.toEntity(dto);
