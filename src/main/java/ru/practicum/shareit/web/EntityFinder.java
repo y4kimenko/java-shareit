@@ -26,9 +26,9 @@ public class EntityFinder {
         );
     }
 
-    public User getUserOrThrow(long Userid) {
-        return userRepository.findById(Userid).orElseThrow(
-                () -> new UserNotFoundException(Userid)
+    public User getUserOrThrow(long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException(userId)
         );
     }
 

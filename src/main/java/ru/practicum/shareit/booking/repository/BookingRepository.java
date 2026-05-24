@@ -26,7 +26,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long>, JpaSpec
     );
 
     @Query("""
-            
              SELECT new ru.practicum.shareit.booking.repository.projection.BookingShortProjection(
                           b.item.id,
                           b.id,
