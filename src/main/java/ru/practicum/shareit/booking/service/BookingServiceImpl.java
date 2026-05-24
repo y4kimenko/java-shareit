@@ -52,7 +52,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingResponseDto updateBooking(long userId, boolean approved, long bookingId) {
+    public BookingResponseDto approveBooking(long userId, boolean approved, long bookingId) {
 
         Booking booking = entityFinder.getBookingOrThrow(bookingId);
         checkUserExists(userId);

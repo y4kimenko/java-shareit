@@ -42,7 +42,7 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingResponseDto updateBooking(
+    public BookingResponseDto approveBooking (
             @PathVariable("bookingId")
             @PositiveOrZero(message = "bookingId не может быть отрицательным") final Long bookingId,
             @RequestParam("approved")
@@ -51,7 +51,7 @@ public class BookingController {
             @PositiveOrZero(message = "X-Sharer-User-Id не может быть отрицательным")
             Long userId
     ) {
-        return bookingService.updateBooking(userId, approved, bookingId);
+        return bookingService.approveBooking(userId, approved, bookingId);
     }
 
     @GetMapping("/{bookingId}")
