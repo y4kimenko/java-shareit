@@ -8,16 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.shareit.user.exception.InvalidBookerIdException;
 import ru.practicum.shareit.web.exception.ConflictException;
 import ru.practicum.shareit.web.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ErrorHandler {
 
     // 1. Ошибки валидации тела запроса (@Valid @RequestBody)
@@ -125,7 +126,7 @@ public class ErrorHandler {
 
     // 8. NotFoundException
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFound(NotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex) {
         ErrorResponse response = new ErrorResponse(
                 ex.getMessage(),
                 ex.getClass().getSimpleName()
@@ -133,4 +134,23 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    // 9. RunTimeException
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntime(RuntimeException ex) {
+        ErrorResponse response = new ErrorResponse(
+                ex.getMessage(),
+                ex.getClass().getSimpleName()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    // 10. InvalidBookerIdException
+    @ExceptionHandler(InvalidBookerIdException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidBookerId(InvalidBookerIdException ex) {
+        ErrorResponse response = new ErrorResponse(
+                ex.getMessage(),
+                ex.getClass().getSimpleName()
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
 }
